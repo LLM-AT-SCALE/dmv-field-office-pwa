@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<title>Field Office — Get in line</title>
+<meta name="description" content="Take your place in the queue and complete your paperwork while you wait.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230C80C3'/%3E%3Ctext x='32' y='42' font-family='Arial Black,Arial,sans-serif' font-size='22' font-weight='900' font-style='italic' fill='%23fff' text-anchor='middle'%3EDMV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css?v=20260813a">
+</head>
+<body>
+
+<a href="#view" class="skip-link" id="skipLink">Skip to main content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="stage">
+  <div class="app">
+
+    <header class="appbar">
+      <img class="mark" src="assets/dmv-logo.png" width="648" height="265"
+           alt="State of California Department of Motor Vehicles">
+      <span class="mark-divider" aria-hidden="true"></span>
+      <div class="mark-text">
+        <b id="brandTitle">Field Office</b>
+        <span id="brandSubtitle">Vehicle Registration &amp; Driver License</span>
+      </div>
+      <div class="appbar-actions">
+        <span class="badge-proto" id="badgeProto">Prototype</span>
+      </div>
+    </header>
+
+    <div class="langbar" role="group" aria-label="Language / Idioma">
+      <button class="lang" data-lang="en" lang="en" aria-pressed="true">English</button>
+      <button class="lang" data-lang="es" lang="es" aria-pressed="false">Español</button>
+    </div>
+
+    <div class="app-body">
+      <main id="view" class="view app-main" tabindex="-1"></main>
+      <aside id="rail" class="app-rail" aria-label="Your ticket"></aside>
+    </div>
+
+    <p aria-live="polite" class="sr-only" id="live"></p>
+  </div>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-haspopup="dialog" aria-label="Ask a question"><span aria-hidden="true">?</span></button>
+
+<div class="scrim" id="scrim"></div>
+
+<section class="chat-sheet" id="chatSheet" role="dialog" aria-modal="true" aria-label="Assistant">
+  <div class="chat-head">
+    <h3 id="chatTitle">Assistant</h3>
+    <button class="chat-close" id="chatClose" aria-label="Close assistant">×</button>
+  </div>
+  <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+  <div class="chat-suggest">
+    <button class="chip">What documents do I need?</button>
+    <button class="chip">Do I need a smog check?</button>
+    <button class="chip">How much are the fees?</button>
+    <button class="chip">Where is the VIN?</button>
+  </div>
+  <form class="chat-input" id="chatForm">
+    <label for="chatInput" class="sr-only" id="chatInputLabel">Your question</label>
+    <input type="text" id="chatInput" placeholder="Ask about registration or licences" autocomplete="off">
+    <button class="btn small" type="submit" id="chatSend">Send</button>
+  </form>
+</section>
+
+<script src="js/i18n.js?v=20260813a"></script>
+<script src="js/barcode.js?v=20260813a"></script>
+<script src="js/store.js?v=20260813a"></script>
+<script src="js/form-reg343.js?v=20260813a"></script>
+<script src="js/i18n-content.js?v=20260813a"></script>
+<script src="js/chat.js?v=20260813a"></script>
+<script src="js/app.js?v=20260813a"></script>
+<script>
+  /* The service worker caches the app shell, which is what makes the PWA load
+     instantly on lobby Wi-Fi. It also means a code change is invisible until
+     the cache is cleared — fine in production, a trap while developing or
+     demonstrating. So it is registered only when served from a real host, and
+     any worker left over from an earlier session is removed on localhost. */
+  (function () {
+    if (!('serviceWorker' in navigator)) return;
+    var local = ['localhost', '127.0.0.1', '::1', ''].indexOf(location.hostname) !== -1
+                || /^192\.168\./.test(location.hostname)
+                || /^10\./.test(location.hostname);
+
+    if (local) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) {
+        rs.forEach(function (r) { r.unregister(); });
+      });
+      if (window.caches) caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); });
+      return;
+    }
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  })();
+</script>
+</body>
+</html>

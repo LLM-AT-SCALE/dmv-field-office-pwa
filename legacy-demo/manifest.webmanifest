@@ -1,0 +1,17 @@
+{
+  "name": "Field Office \u2014 Vehicle Registration & Driver License",
+  "short_name": "Field Office",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "description": "Take your place in the queue and complete your paperwork while you wait.",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='30' fill='%230C80C3'/%3E%3Ctext x='96' y='126' font-family='Arial Black,Arial,sans-serif' font-size='66' font-weight='900' font-style='italic' fill='%23fff' text-anchor='middle'%3EDMV%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

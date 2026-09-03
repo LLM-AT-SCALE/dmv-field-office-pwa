@@ -1,0 +1,312 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ==========================================================================
+   Field Office PWA — design tokens
+
+   SINGLE SOURCE OF TRUTH. Every colour, radius, spacing step, duration and
+   type size lives here. Components must reference tokens only — no hex values,
+   no pixel literals, no ad-hoc durations anywhere else in the codebase.
+
+   The palette is the supplied design system. shadcn's semantic names
+   (--primary, --muted, --border …) are mapped ONTO that palette so the stock
+   components inherit it without being rewritten.
+
+   Light only. There is no dark mode: one appearance means one set of contrast
+   numbers to hold, and no chance of a customer landing on a half-styled
+   variant. `.dark` is deliberately absent.
+   ========================================================================== */
+
+@theme inline {
+  /* --- shadcn semantic surface --- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* --- domain colours --- */
+  --color-brand: var(--brand);                     /* DMV logo blue */
+  --color-deep: var(--deep);                       /* navy, for figures */
+  --color-gold: var(--gold);                       /* accent as BACKGROUND */
+  --color-gold-ink: var(--gold-ink);               /* accent as TEXT (AA) */
+  --color-elevated: var(--elevated);
+  --color-elevated-2: var(--elevated-2);
+  --color-border-strong: var(--border-strong);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-primary-hover: var(--primary-hover);
+
+  /* --- type --- */
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+
+  --text-hero: var(--fs-hero);
+  --text-h1: var(--fs-h1);
+  --text-h2: var(--fs-h2);
+  --text-h3: var(--fs-h3);
+  --text-prose: var(--fs-prose);
+  --text-body: var(--fs-body);
+  --text-small: var(--fs-small);
+  --text-tiny: var(--fs-tiny);
+  --text-token: var(--fs-token);       /* the queue number, read across a lobby */
+
+  /* --- 4px spacing grid --- */
+  --spacing-1: var(--s1);
+  --spacing-2: var(--s2);
+  --spacing-3: var(--s3);
+  --spacing-4: var(--s4);
+  --spacing-5: var(--s5);
+  --spacing-6: var(--s6);
+  --spacing-7: var(--s7);
+  --spacing-8: var(--s8);
+  --spacing-10: var(--s10);
+  --spacing-12: var(--s12);
+  --spacing-13: var(--s13);            /* 52px control height */
+  --spacing-16: var(--s16);
+  --spacing-20: var(--s20);
+
+  /* --- radii --- */
+  --radius-pill: var(--r-pill);
+  --radius-input: var(--r-input);
+  --radius-card: var(--r-card);
+  --radius-chip: var(--r-chip);
+  --radius-panel: var(--r-panel);
+  --radius-sm: var(--r-chip);
+  --radius-md: var(--r-input);
+  --radius-lg: var(--r-card);
+  --radius-xl: var(--r-panel);
+
+  /* --- layout --- */
+  --container-shell: var(--w-shell);
+  --container-content: var(--w-content);
+  --container-rail: var(--w-rail);
+
+  /* --- motion --- */
+  --ease-brand: var(--e-brand);
+  --ease-brand-out: var(--e-brand-out);
+  --transition-duration-fast: var(--t-fast);
+  --transition-duration-slow: var(--t-slow);
+  --animate-rise: rise var(--t-slow) var(--e-brand-out) backwards;
+}
+
+:root {
+  /* ---------- palette ---------- */
+  --brand:            #0C80C3;   /* sampled from the official DMV logo */
+  --deep:             #163159;
+  --gold:             #FFD457;   /* gold is a BACKGROUND colour ... */
+  --gold-ink:         #7A5200;   /* ... this is gold as TEXT; #FFD457 on white fails AA */
+
+  --background:       #FFFFFF;
+  --foreground:       #101010;
+  --card:             #FFFFFF;
+  --card-foreground:  #101010;
+  --popover:          #FFFFFF;
+  --popover-foreground: #101010;
+
+  --primary:            #0B669E;
+  --primary-foreground: #FFFFFF;
+  --primary-hover:      #08507E;
+
+  --secondary:            #F4F5F7;
+  --secondary-foreground: #101010;
+
+  --muted:            #F4F5F7;
+  --muted-foreground: #5C6470;
+
+  --accent:            #FFD457;
+  --accent-foreground: #101010;   /* dark ink on gold = 13.4:1 */
+
+  --destructive:            #C02718;
+  --destructive-foreground: #FFFFFF;
+
+  --success: #0A7B4B;
+  --warning: #9A6B00;
+
+  --elevated:      #F4F5F7;
+  --elevated-2:    #E8EAEE;
+  --border:        #DCDFE5;
+  --border-strong: #B9BEC7;
+  --input:         #B9BEC7;
+  --ring:          #FFD457;
+
+  /* ---------- type ---------- */
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Fluid throughout, so nothing snaps at a breakpoint */
+  --fs-hero:  clamp(34px, 7.2vw, 64px);
+  --fs-h1:    clamp(28px, 5.4vw, 46px);
+  --fs-h2:    clamp(24px, 4vw, 34px);
+  --fs-h3:    clamp(19px, 2.4vw, 23px);
+  --fs-prose: clamp(17px, 1.6vw, 21px);
+  --fs-body:  clamp(16px, 1.3vw, 18px);
+  --fs-small: clamp(15px, 1.1vw, 16px);
+  --fs-tiny:  clamp(13px, .95vw, 14px);
+
+  /* The token number is the one figure a customer hunts for on a screen held
+     at arm's length, and staff read it from across a counter. It scales past
+     the hero step deliberately. */
+  --fs-token: clamp(56px, 16vw, 104px);
+
+  /* ---------- 4px grid ---------- */
+  --s1: 4px;   --s2: 8px;   --s3: 12px;  --s4: 16px;  --s5: 20px;
+  --s6: 24px;  --s7: 28px;  --s8: 32px;  --s10: 40px; --s12: 48px;
+  --s16: 64px; --s20: 80px;
+  /* 52px sits off the 4px-grid naming but on the grid itself. Controls are
+     operated by people standing up holding a phone, so they are larger than
+     the 44px accessibility floor. */
+  --s13: 52px;
+
+  /* ---------- radii ---------- */
+  --r-pill:  36px;   /* primary buttons */
+  --r-input: 4px;
+  --r-card:  4px;
+  --r-chip:  2px;
+  --r-panel: 8px;
+  --radius:  4px;    /* shadcn base */
+
+  /* ---------- layout ---------- */
+  --w-shell:   1440px;
+  --w-content: 680px;
+  --w-rail:    320px;
+  --gutter:    clamp(16px, 4vw, 48px);
+  --header-h:  68px;
+  /* The DMV lockup carries two lines of microtype that stop being legible
+     below roughly 40px tall. It holds this height; the product subtitle
+     yields space on narrow screens instead. */
+  --logo-h:    42px;
+
+  /* ---------- motion ---------- */
+  --t-fast: 200ms;
+  --t-slow: 400ms;
+  --e-brand: cubic-bezier(.2, .7, .3, 1);
+  --e-brand-out: cubic-bezier(.16, 1, .3, 1);
+
+  /* ---------- minimum interactive target ---------- */
+  --tap-min: 44px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-size: var(--fs-body);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+  h1 { font-size: var(--fs-h1); line-height: .96; letter-spacing: -.015em; }
+  h2 { font-size: var(--fs-h2); line-height: 1.08; letter-spacing: -.01em; }
+  h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 700; }
+
+  /* Focus is moved to the heading on every view change; the ring would be
+     noise there, but the announcement to a screen reader is not. */
+  h1[tabindex="-1"]:focus-visible,
+  h2[tabindex="-1"]:focus-visible { outline: none; }
+
+  ::selection { background: var(--primary); color: var(--primary-foreground); }
+}
+
+@layer components {
+  /* Grain removes the sterility of flat white. Decorative only. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .022;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page-wash {
+    background:
+      radial-gradient(120vw 70vh at 50% -18%, color-mix(in oklab, var(--primary) 10%, transparent), transparent 62%),
+      var(--background);
+  }
+
+  /* Keyboard users must be able to jump past the header on every view. */
+  .skip-link {
+    position: absolute;
+    left: var(--s4);
+    top: -100px;
+    z-index: 100;
+    padding: var(--s3) var(--s5);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-radius: var(--r-input);
+    text-decoration: none;
+    transition: top var(--t-fast) var(--e-brand);
+  }
+  .skip-link:focus { top: var(--s4); }
+
+  /* The barcode sits on white regardless of surface — scanners need the
+     contrast and a tinted background costs read reliability. */
+  .barcode-plate {
+    background: #FFFFFF;
+    border-radius: var(--r-input);
+    padding: var(--s3);
+    line-height: 0;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Staggered entrance. Composited properties only — nothing that triggers
+   layout — and entirely absent when the user has asked for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-stagger] > * { animation: var(--animate-rise); }
+  [data-stagger] > *:nth-child(1) { animation-delay: 0ms; }
+  [data-stagger] > *:nth-child(2) { animation-delay: 40ms; }
+  [data-stagger] > *:nth-child(3) { animation-delay: 80ms; }
+  [data-stagger] > *:nth-child(4) { animation-delay: 120ms; }
+  [data-stagger] > *:nth-child(5) { animation-delay: 160ms; }
+  [data-stagger] > *:nth-child(n+6) { animation-delay: 200ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { display: none; }
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media print {
+  .grain, .skip-link { display: none !important; }
+  body { background: #fff; }
+}

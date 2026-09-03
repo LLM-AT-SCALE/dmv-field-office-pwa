@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFFFFF">
+<title>Counter View — Field Office</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230C80C3'/%3E%3Ctext x='32' y='42' font-family='Arial Black,Arial,sans-serif' font-size='22' font-weight='900' font-style='italic' fill='%23fff' text-anchor='middle'%3EDMV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css?v=20260813a">
+<link rel="stylesheet" href="css/officer.css?v=20260813a">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="o-bar">
+  <img class="mark" src="assets/dmv-logo.png" width="648" height="265"
+       alt="State of California Department of Motor Vehicles">
+  <span class="mark-divider" aria-hidden="true"></span>
+  <div class="mark-text">
+    <b>Counter View</b>
+    <span id="officeName">Folsom Field Office</span>
+  </div>
+  <span class="badge-proto">Prototype</span>
+  <div class="o-bar-actions">
+    <div class="who">
+      <b>R. Alvarez</b>
+      Technician · Window 4
+    </div>
+  </div>
+</header>
+
+<div class="o-shell">
+
+  <section class="o-hero">
+    <h1>Retrieve an application</h1>
+    <p class="lede muted">Enter the token number you have just called. The customer's application appears already completed.</p>
+    <form class="o-lookup" id="lookupForm">
+      <label for="tokenInput" class="sr-only">Token number</label>
+      <input type="text" id="tokenInput" placeholder="A-042" autofocus autocomplete="off" autocapitalize="characters" inputmode="text">
+      <button class="btn accent" type="submit">Look up</button>
+    </form>
+  </section>
+
+  <div class="o-cols">
+
+    <aside class="o-queue" aria-label="Queue">
+      <h3>Queue</h3>
+      <div class="card flush" style="margin-bottom:var(--s5)">
+        <dl class="rows">
+          <div class="row"><dt>Now serving · VR</dt><dd id="nowServingVR">–</dd></div>
+          <div class="row"><dt>Now serving · DL</dt><dd id="nowServingDL">–</dd></div>
+        </dl>
+      </div>
+      <p class="o-subhead">Waiting</p>
+      <ul class="o-tokenlist" id="tokenList"></ul>
+      <button class="btn ghost small block" id="resetDemo" style="margin-top:var(--s6)">Reset demo data</button>
+    </aside>
+
+    <section class="o-record" id="record"></section>
+
+  </div>
+
+  <footer class="o-foot">
+    <b>Prototype.</b> Mocked data held in this browser only — no backend, no network calls, no real records.
+    In production every access shown here is authenticated against DMV single sign-on and written to the audit log,
+    and marking a transaction complete triggers a hard delete of the application record.
+  </footer>
+
+</div>
+
+<script src="vendor/pdf-lib.min.js?v=20260813a"></script>
+<script src="js/pdf-fill.js?v=20260813a"></script>
+<script src="js/store.js?v=20260813a"></script>
+<script src="js/form-reg343.js?v=20260813a"></script>
+<script src="js/officer.js?v=20260813a"></script>
+</body>
+</html>

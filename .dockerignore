@@ -1,0 +1,29 @@
+# Build inputs only — everything here either rebuilds, does not belong in an
+# image, or must never leave this machine.
+node_modules
+.next
+.git
+.gitignore
+npm-debug.log*
+
+# Project material that is not application code. legacy-demo/ in particular is
+# the old vanilla build kept for reference; shipping it would put a second,
+# unmaintained copy of the app inside the container.
+legacy-demo
+docs
+client_docs
+scripts
+.claude
+.agents
+.playwright-mcp
+skills-lock.json
+
+# forms/ holds the source DMV PDFs. The one the app actually serves is already
+# copied into public/forms at build time, so this is duplicate weight.
+forms
+
+# Local and editor noise
+.env*.local
+.DS_Store
+*.pem
+tsconfig.tsbuildinfo

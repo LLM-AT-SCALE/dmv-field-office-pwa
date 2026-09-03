@@ -1,0 +1,10 @@
+Counter view — STAFF ONLY
+
+https://rfdbdxz8mh.us-west-2.awsapprunner.com/counter
+
+Do not print this as a poster and do not display it in a lobby.
+This prototype has no staff sign-in: anyone with this URL can read
+every application at the office. Use with test data only.
+
+To use it: take a ticket in the customer app, fill in some fields,
+then type the token number (for example A-042) into the counter.

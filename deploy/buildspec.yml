@@ -1,0 +1,52 @@
+# =============================================================================
+# AWS CodeBuild — build the image and push it to ECR
+#
+# Used instead of a local `docker build` for two reasons: it needs no Docker
+# daemon on the developer's machine, and CodeBuild's Linux runners are already
+# x86_64, so the Apple Silicon architecture mismatch that kills App Runner
+# ("exec format error") cannot happen.
+#
+# Two constraints shape how this is written:
+#
+#   1. CodeBuild executes these under `sh` (dash), NOT bash. Bash-only syntax
+#      such as ${VAR:0:12} fails with "Bad substitution".
+#   2. Shell variables are not reliably carried between phases, so everything
+#      that needs REPO_URI happens inside a single phase rather than being set
+#      in one and read in another.
+#
+# Required environment variables on the CodeBuild project:
+#   AWS_ACCOUNT_ID   the account owning the ECR repository
+#   IMAGE_REPO_NAME  e.g. field-office-pwa
+# (AWS_DEFAULT_REGION is supplied by CodeBuild.)
+#
+# The project's service role needs ECR push permissions.
+# =============================================================================
+
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to ECR in $AWS_DEFAULT_REGION"
+      - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+
+  build:
+    commands:
+      # Build, tag and push in one phase so no variable has to survive a phase
+      # boundary. The build number tags the image so a running service can be
+      # traced back to a build and rolled back to a known one.
+      - |
+        set -e
+        REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME"
+        IMAGE_TAG="build-${CODEBUILD_BUILD_NUMBER}"
+        echo "Building $REPO_URI:$IMAGE_TAG"
+        docker build -t "$REPO_URI:$IMAGE_TAG" -t "$REPO_URI:latest" .
+        echo "Pushing"
+        docker push "$REPO_URI:$IMAGE_TAG"
+        docker push "$REPO_URI:latest"
+        printf '[{"name":"field-office-pwa","imageUri":"%s"}]' "$REPO_URI:$IMAGE_TAG" > imagedefinitions.json
+        echo "Pushed $REPO_URI:$IMAGE_TAG"
+
+artifacts:
+  files:
+    - imagedefinitions.json
